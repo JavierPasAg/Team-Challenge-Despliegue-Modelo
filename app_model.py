@@ -30,42 +30,73 @@ def hello(): # Ligado al endopoint "/" o sea el home, con el método GET
     return "Bienvenido a mi API del modelo advertising"
 
 # Enruta la funcion al endpoint /api/v1/predict
-# Enruta la funcion al endpoint /api/v1/predict
-@app.route("/api/v1/predict", methods=['GET'])
+from flask import request, jsonify
+import pandas as pd
+import numpy as np
+
+@app.route("/api/v1/predict", methods=['POST'])
 def predict():
-    # 1. Obtenemos la lista de todas las columnas que el modelo espera
-    # (Esto evita escribir una por una si son muchas)
-    expected_columns = model.feature_names_in_
+    # 1. Obtener los datos del cuerpo JSON
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No se ha proporcionado un cuerpo JSON"}), 400
 
-    # 2. Definimos los valores por defecto (ejemplo: 0 o np.nan)
-    # Puedes personalizar esto si algunas columnas requieren una media específica
-    default_value = 0.0 
+    # 2. Tu lista de columnas obligatorias (la he guardado en una variable)
+    required_columns = [
+        'host_since', 'host_response_rate', 'host_acceptance_rate', 'host_is_superhost', 
+        'host_listings_count', 'host_total_listings_count', 'host_verifications', 
+        'host_has_profile_pic', 'host_identity_verified', 'latitude', 'longitude', 
+        'accommodates', 'bathrooms', 'bedrooms', 'beds', 'price', 'minimum_nights', 
+        'maximum_nights', 'availability_365', 'number_of_reviews_ltm', 
+        'estimated_occupancy_l365d', 'review_scores_rating', 'review_scores_accuracy', 
+        'review_scores_cleanliness', 'review_scores_checkin', 'review_scores_communication', 
+        'review_scores_location', 'review_scores_value', 'instant_bookable', 
+        'reviews_per_month', 'host_response_time_ord', 'has_reviews', 
+        'days_since_last_review', 'review_lifetime', 'host_response_time_num', 
+        'has_host_responded', 'room_type_Hotel room', 'room_type_Private room', 
+        'room_type_Shared room', 'bathrooms_num', 'is_bathroom_shared', 'ng_Barajas', 
+        'ng_Carabanchel', 'ng_Centro', 'ng_Chamartín', 'ng_Chamberí', 'ng_Ciudad Lineal', 
+        'ng_Fuencarral - El Pardo', 'ng_Hortaleza', 'ng_Latina', 'ng_Moncloa - Aravaca', 
+        'ng_Moratalaz', 'ng_Puente de Vallecas', 'ng_Retiro', 'ng_Salamanca', 
+        'ng_San Blas - Canillejas', 'ng_Tetuán', 'ng_Usera', 'ng_Vicálvaro', 
+        'ng_Villa de Vallecas', 'ng_Villaverde', 'neighbourhood_revenue', 'pt_revenue'
+    ]
+
+    # 3. Construir el diccionario de entrada con valores por defecto (0.0)
+    # Si la columna está en el JSON, usamos ese valor; si no, ponemos 0.0
+    input_values = {}
+    missing_cols = []
     
-    # 3. Creamos un diccionario con todos los campos inicializados
-    input_values = {col: default_value for col in expected_columns}
+    for col in required_columns:
+        if col in data:
+            input_values[col] = data[col]
+        else:
+            input_values[col] = 0.0  # Valor por defecto
+            missing_cols.append(col)
 
-    # 4. Actualizamos el diccionario con los parámetros que vengan en la URL
-    # Si el usuario no envía 'bedrooms', se queda el 0.0 del paso anterior
-    for col in expected_columns:
-        val = request.args.get(col)
-        if val is not None:
-            try:
-                input_values[col] = float(val)
-            except ValueError:
-                pass # O manejar error si el dato no es numérico
+    # 4. Crear DataFrame asegurando el ORDEN exacto de las columnas
+    input_data = pd.DataFrame([input_values])[required_columns]
 
-    # 5. Convertimos a DataFrame asegurando el orden correcto de las columnas
-    input_data = pd.DataFrame([input_values])[expected_columns]
+    # 5. Realizar la predicción
+    try:
+        prediction = model.predict(input_data)
+        
+        # 6. Convertir el resultado a float nativo de Python para evitar el error de JSON
+        result = float(prediction[0])
+        
+        response = {
+            'prediction': result,
+            'status': 'success'
+        }
+        
+        # Opcional: Avisar si faltaron campos y se usaron ceros
+        if missing_cols:
+            response['note'] = f"Se usaron valores por defecto para {len(missing_cols)} campos faltantes."
 
-    # 6. Predicción
-    
+        return jsonify(response)
 
-    prediction = model.predict(input_data)
-
-    return jsonify({
-        'predictions': prediction.tolist()[0] # Convierte el array a una lista de Python
-    })
-
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 # Enruta la funcion al endpoint /api/v1/retrain
 @app.route("/api/v1/retrain/",methods = ['GET'])
 def retrain(): # Ligado al endpoint '/api/v1/retrain/', método GET
