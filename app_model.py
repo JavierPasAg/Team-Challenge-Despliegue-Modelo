@@ -30,29 +30,41 @@ def hello(): # Ligado al endopoint "/" o sea el home, con el método GET
     return "Bienvenido a mi API del modelo advertising"
 
 # Enruta la funcion al endpoint /api/v1/predict
-@app.route("/api/v1/predict",methods = ['GET'])
-def predict(): # Ligado al endpoint '/api/v1/predict', con el método GET
+# Enruta la funcion al endpoint /api/v1/predict
+@app.route("/api/v1/predict", methods=['GET'])
+def predict():
+    # 1. Obtenemos la lista de todas las columnas que el modelo espera
+    # (Esto evita escribir una por una si son muchas)
+    expected_columns = model.feature_names_in_
 
+    # 2. Definimos los valores por defecto (ejemplo: 0 o np.nan)
+    # Puedes personalizar esto si algunas columnas requieren una media específica
+    default_value = 0.0 
     
-    accommodates = request.args.get('accommodates', np.nan, type=float)
-    availability_365 = request.args.get('availability_365', np.nan, type=float)
-    bathrooms = request.args.get('bathrooms', np.nan, type=float)
+    # 3. Creamos un diccionario con todos los campos inicializados
+    input_values = {col: default_value for col in expected_columns}
 
-    missing = [name for name, val in [('accommodates', accommodates), ('availability_365', availability_365), ('bathrooms', bathrooms)] if np.isnan(val)]
+    # 4. Actualizamos el diccionario con los parámetros que vengan en la URL
+    # Si el usuario no envía 'bedrooms', se queda el 0.0 del paso anterior
+    for col in expected_columns:
+        val = request.args.get(col)
+        if val is not None:
+            try:
+                input_values[col] = float(val)
+            except ValueError:
+                pass # O manejar error si el dato no es numérico
 
-    input_data = pd.DataFrame({'accommodates': [accommodates], 'availability_365': [availability_365], 'bathrooms': [bathrooms]})
-    print("Columnas que espera el modelo:")
-    print(model.feature_names_in_)
+    # 5. Convertimos a DataFrame asegurando el orden correcto de las columnas
+    input_data = pd.DataFrame([input_values])[expected_columns]
 
-    print("Columnas que estoy enviando:")
-    print(input_data.columns.tolist())
+    # 6. Predicción
+    
+
     prediction = model.predict(input_data)
 
-    response = {'predictions': prediction[0]}
-    if missing:
-        response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
-
-    return jsonify(response)
+    return jsonify({
+        'predictions': prediction.tolist()[0] # Convierte el array a una lista de Python
+    })
 
 # Enruta la funcion al endpoint /api/v1/retrain
 @app.route("/api/v1/retrain/",methods = ['GET'])
