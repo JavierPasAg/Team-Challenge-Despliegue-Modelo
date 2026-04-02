@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Predictor Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="form-container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Configuración de Variables</h2>
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-custom" onclick="randomize()">
+                             🎲 Randomizar Todo
+                        </button>
+        
+                        <button type="button" class="btn btn-custom" onclick="sendPrediction()">
+                            🚀 Enviar a Predicción
+                        </button>
+        
+                        <a href="/" class="btn btn-custom">
+                            🏠 Inicio
+                        </a>
+                    </div>
+                </div>
+                <form id="ml-form" class="row g-3">
+                    </form>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div id="result-box" class="card text-white bg-dark">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Resultado de Predicción</h5>
+                    <hr>
+                    <h2 id="prediction-value" class="display-4 text-warning">--</h2>
+                    <p id="prediction-note" class="small text-secondary"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tu lista de columnas exacta
+    const columns = [
+        'host_since', 'host_response_rate', 'host_acceptance_rate', 'host_is_superhost', 
+        'host_listings_count', 'host_total_listings_count', 'host_verifications', 
+        'host_has_profile_pic', 'host_identity_verified', 'latitude', 'longitude', 
+        'accommodates', 'bathrooms', 'bedrooms', 'beds', 'price', 'minimum_nights', 
+        'maximum_nights', 'availability_365', 'number_of_reviews_ltm', 
+        'estimated_occupancy_l365d', 'review_scores_rating', 'review_scores_accuracy', 
+        'review_scores_cleanliness', 'review_scores_checkin', 'review_scores_communication', 
+        'review_scores_location', 'review_scores_value', 'instant_bookable', 
+        'reviews_per_month', 'host_response_time_ord', 'has_reviews', 
+        'days_since_last_review', 'review_lifetime', 'host_response_time_num', 
+        'has_host_responded', 'room_type_Hotel room', 'room_type_Private room', 
+        'room_type_Shared room', 'bathrooms_num', 'is_bathroom_shared', 'ng_Barajas', 
+        'ng_Carabanchel', 'ng_Centro', 'ng_Chamartín', 'ng_Chamberí', 'ng_Ciudad Lineal', 
+        'ng_Fuencarral - El Pardo', 'ng_Hortaleza', 'ng_Latina', 'ng_Moncloa - Aravaca', 
+        'ng_Moratalaz', 'ng_Puente de Vallecas', 'ng_Retiro', 'ng_Salamanca', 
+        'ng_San Blas - Canillejas', 'ng_Tetuán', 'ng_Usera', 'ng_Vicálvaro', 
+        'ng_Villa de Vallecas', 'ng_Villaverde', 'neighbourhood_revenue', 'pt_revenue'
+    ];
+
+    const form = document.getElementById('ml-form');
+
+    // 1. Generar Inputs Automáticamente
+    columns.forEach(col => {
+        const div = document.createElement('div');
+        div.className = 'col-xl-3 col-lg-4 col-md-6';
+        div.innerHTML = `
+            <div class="input-card">
+                <label class="form-label small fw-bold mb-1">${col}</label>
+                <input type="number" step="any" class="form-control form-control-sm" id="inp-${col}" value="0">
+            </div>
+        `;
+        form.appendChild(div);
+    });
+
+    // 2. Función Randomizar
+    function randomize() {
+        columns.forEach(col => {
+            const input = document.getElementById(`inp-${col}`);
+            // Lógica simple de random: 0-1 para binarias, 0-100 para el resto
+            if (col.startsWith('ng_') || col.startsWith('room_type_') || col.startsWith('is_')) {
+                input.value = Math.round(Math.random());
+            } else if (col === 'latitude') {
+                input.value = (Math.random() * (40.5 - 40.3) + 40.3).toFixed(5);
+            } else if (col === 'longitude') {
+                input.value = (Math.random() * (-3.6 - -3.8) + -3.8).toFixed(5);
+            } else {
+                input.value = Math.floor(Math.random() * 50);
+            }
+        });
+    }
+
+    // 3. Función Enviar Predicción
+    async function sendPrediction() {
+        const data = {};
+        columns.forEach(col => {
+            data[col] = parseFloat(document.getElementById(`inp-${col}`).value) || 0;
+        });
+
+        const resultBox = document.getElementById('result-box');
+        const predText = document.getElementById('prediction-value');
+        
+        resultBox.style.display = 'block';
+        predText.innerText = "⏳...";
+
+        try {
+            const response = await fetch('/api/v1/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            
+            if(result.prediction !== undefined) {
+                predText.innerText = result.prediction.toFixed(2);
+                document.getElementById('prediction-note').innerText = result.note || "Predicción realizada";
+            } else {
+                predText.innerText = "Error";
+                alert("Error en el servidor: " + result.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("No se pudo conectar con el endpoint /api/v1/predict");
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import os
 import pickle
 import pandas as pd
@@ -27,13 +27,14 @@ model = joblib.load("modelo_optimizado.pkl")
 # Enruta la landing page (endpoint /)
 @app.route("/",methods = ['GET'])
 def hello(): # Ligado al endopoint "/" o sea el home, con el método GET
-    return "Bienvenido a mi API del modelo advertising"
+    return render_template("index.html")
+
+# Enrutamos la función para rellenar los valores con los que predecir
+@app.route("/api/v1/predict-form", methods=['GET'])
+def predict_form():
+    return render_template("form.html")
 
 # Enruta la funcion al endpoint /api/v1/predict
-from flask import request, jsonify
-import pandas as pd
-import numpy as np
-
 @app.route("/api/v1/predict", methods=['POST'])
 def predict():
     # 1. Obtener los datos del cuerpo JSON
