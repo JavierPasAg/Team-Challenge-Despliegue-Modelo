@@ -14,7 +14,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Carga el modelo
-model = joblib.load("modelo_optimizado.pkl")
+model = joblib.load("models/modelo_optimizado.pkl")
 
 # os.chdir(os.path.dirname(__file__))
 
