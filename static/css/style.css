@@ -1,82 +1,145 @@
 /* ============================= */
-/* 1. ESTILO GENERAL DEL BODY    */
+/* 1. ESTILO GLOBAL              */
 /* ============================= */
 
-body {
-    background: linear-gradient(180deg, #f8f9fa 0%, #eef2f7 100%);
+body.form-page {
+    background:
+        radial-gradient(circle at top right, rgba(222, 102, 17, 0.10), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(13, 110, 253, 0.08), transparent 30%),
+        linear-gradient(180deg, #f8f9fa 0%, #eef2f7 100%);
     color: #1f2937;
     font-family: Arial, sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 /* ============================= */
-/* 2. CABECERA DE LA PÁGINA      */
+/* 2. BANNER SUPERIOR            */
 /* ============================= */
 
-.page-header {
-    background: linear-gradient(135deg, rgb(222, 102, 17) 0%, rgb(189, 184, 193) 100%);
+.top-banner {
+    background: linear-gradient(135deg, #de6611 0%, #f59e0b 45%, #334155 100%);
+    border-radius: 24px;
+    padding: 32px;
     color: white;
-    padding: 28px 32px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(222, 102, 17, 0.18);
+    box-shadow: 0 16px 36px rgba(222, 102, 17, 0.22);
+    overflow: hidden;
+    position: relative;
 }
 
-.page-eyebrow {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.18);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 700;
+.top-banner::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    top: -30px;
+    width: 180px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
 }
 
-.page-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-}
-
-.page-subtitle {
-    max-width: 760px;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.6;
-}
-
-/* ============================= */
-/* 3. CONTENEDOR PRINCIPAL       */
-/* ============================= */
-
-.form-container {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* ============================= */
-/* 4. TOOLBAR SUPERIOR           */
-/* ============================= */
-
-.toolbar {
+.top-banner__content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
 }
 
-.toolbar-left {
-    max-width: 520px;
+.top-banner__left {
+    max-width: 820px;
 }
 
-.toolbar-right {
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.top-banner__title {
+    font-size: 2.3rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.top-banner__text {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.top-banner__right {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+}
+
+.top-banner__icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.btn-home-banner {
+    background: #ffffff;
+    color: #de6611;
+    border-radius: 14px;
+    font-weight: 700;
+    padding: 10px 16px;
+    border: none;
+}
+
+.btn-home-banner:hover {
+    background: #fff7ed;
+    color: #b45309;
+}
+
+/* ============================= */
+/* 3. CONTENEDOR FORMULARIO      */
+/* ============================= */
+
+.form-container {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 22px;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.form-header-banner {
+    background: linear-gradient(135deg, #eff6ff 0%, #fff7ed 100%);
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 20px 22px;
+}
+
+.mini-eyebrow {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
 }
 
 .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.45rem;
+    font-weight: 800;
     color: #1f2937;
 }
 
@@ -86,117 +149,125 @@ body {
 }
 
 /* ============================= */
-/* 5. BARRA DE FILTROS           */
+/* 4. BOTONES DE ACCIÓN          */
 /* ============================= */
 
-.filters-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding: 18px;
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-}
-
-.search-box {
-    flex: 1;
-    min-width: 260px;
-}
-
-.stats-box {
-    display: flex;
-    align-items: center;
-}
-
-.stats-pill {
-    background: white;
-    border: 1px solid #dbe2ea;
+.btn-action {
     border-radius: 14px;
-    padding: 12px 16px;
-    min-width: 180px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-weight: 700;
+    padding: 11px 16px;
+    border: 2px solid transparent;
+    transition: all 0.25s ease;
 }
 
-.stats-pill span {
-    display: block;
-    font-size: 0.85rem;
-    color: #6b7280;
+.btn-random {
+    background: #fff7ed;
+    color: #c2410c;
+    border-color: #fdba74;
 }
 
-.stats-pill strong {
-    font-size: 1.2rem;
-    color: rgb(222, 102, 17);
+.btn-random:hover {
+    background: #ffedd5;
+    color: #9a3412;
 }
 
-/* ============================= */
-/* 6. BOTONES                    */
-/* ============================= */
-
-.btn-custom {
-    color: rgb(222, 102, 17);
-    border: 2px solid rgb(222, 102, 17);
-    background-color: transparent;
-    transition: all 0.3s ease;
-    border-radius: 12px;
-    font-weight: 600;
-    padding: 10px 16px;
+.btn-predict {
+    background: linear-gradient(135deg, #de6611 0%, #ea580c 100%);
+    color: #ffffff;
+    border-color: #de6611;
+    box-shadow: 0 10px 22px rgba(222, 102, 17, 0.22);
 }
 
-.btn-custom:hover {
-    background-color: rgb(222, 102, 17);
-    color: white;
-    transform: translateY(-1px);
+.btn-predict:hover {
+    background: linear-gradient(135deg, #c45108 0%, #c2410c 100%);
+    color: #ffffff;
 }
 
-.btn-custom-solid {
-    background-color: rgb(222, 102, 17);
-    color: white;
-    box-shadow: 0 8px 18px rgba(222, 102, 17, 0.25);
+.btn-home {
+    background: #ffffff;
+    color: #334155;
+    border-color: #cbd5e1;
 }
 
-.btn-custom-solid:hover {
-    background-color: rgb(190, 82, 8);
-    border-color: rgb(190, 82, 8);
-    color: white;
+.btn-home:hover {
+    background: #f8fafc;
+    color: #0f172a;
 }
 
 /* ============================= */
-/* 7. INPUT CARDS                */
+/* 5. FRANJA INFO                */
+/* ============================= */
+
+.info-strip {
+    display: grid;
+    grid-template-columns: 180px 180px 1fr;
+    gap: 16px;
+    align-items: end;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.info-strip__item {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 12px 14px;
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-strip__label {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.info-strip__item strong {
+    font-size: 1.05rem;
+    color: #de6611;
+}
+
+.info-strip__item--search {
+    min-height: auto;
+}
+
+/* ============================= */
+/* 6. TARJETAS DE INPUT          */
 /* ============================= */
 
 .input-card {
     height: 100%;
-    border: 1px solid #dee2e6;
+    border: 1px solid #e2e8f0;
     padding: 14px;
-    border-radius: 14px;
-    background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    transition: transform 0.16s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .input-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(222, 102, 17, 0.4);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    border-color: rgba(222, 102, 17, 0.45);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
 }
 
 .input-card-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 .input-badge {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: rgb(222, 102, 17);
-    background: rgba(222, 102, 17, 0.1);
+    color: #de6611;
+    background: rgba(222, 102, 17, 0.10);
     border-radius: 999px;
     padding: 4px 8px;
     white-space: nowrap;
@@ -207,18 +278,18 @@ body {
 }
 
 .form-control {
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #dbe2ea;
     padding: 10px 12px;
 }
 
 .form-control:focus {
-    border-color: rgba(222, 102, 17, 0.5);
+    border-color: rgba(222, 102, 17, 0.55);
     box-shadow: 0 0 0 4px rgba(222, 102, 17, 0.12);
 }
 
 /* ============================= */
-/* 8. RESULTADO LATERAL          */
+/* 7. TARJETA RESULTADO          */
 /* ============================= */
 
 .result-card {
@@ -226,38 +297,32 @@ body {
     position: sticky;
     top: 20px;
     border: none;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(222, 102, 17, 0.22);
-    background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-    color: white;
+    border-radius: 22px;
     overflow: hidden;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
+    background: linear-gradient(180deg, #1f2937 0%, #0f172a 100%);
+    color: white;
 }
 
 .result-card .card-body {
     padding: 24px;
 }
 
-.result-header {
-    margin-bottom: 6px;
+.result-card__banner {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.14), rgba(222, 102, 17, 0.10));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 14px 16px;
 }
 
-.result-eyebrow {
-    display: inline-block;
-    background: rgba(255, 193, 7, 0.15);
+.result-card__eyebrow {
     color: #fbbf24;
-    padding: 6px 12px;
-    border-radius: 999px;
     font-size: 0.8rem;
     font-weight: 700;
 }
 
-.result-helper {
-    color: rgba(255, 255, 255, 0.75);
-    line-height: 1.5;
-}
-
-.prediction-number {
-    font-size: 2.8rem;
+.prediction-value {
+    font-size: 2.9rem;
     font-weight: 800;
     color: #fbbf24;
     line-height: 1.1;
@@ -265,38 +330,34 @@ body {
 }
 
 .prediction-currency {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.76);
     font-size: 0.92rem;
 }
 
 .prediction-note {
-    min-height: 38px;
+    min-height: 42px;
     color: #d1d5db;
     line-height: 1.5;
 }
 
-.result-card--active {
-    box-shadow: 0 12px 30px rgba(222, 102, 17, 0.3);
-}
-
 /* ============================= */
-/* 9. PANEL DE RESUMEN           */
+/* 8. RESUMEN LATERAL            */
 /* ============================= */
 
-.summary-panel {
-    background: rgba(255, 255, 255, 0.06);
+.result-summary {
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 16px;
 }
 
-.summary-title {
+.result-summary__title {
     margin-bottom: 14px;
-    color: #f9fafb;
+    color: #f8fafc;
     font-weight: 700;
 }
 
-.summary-item {
+.result-summary__item {
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -305,49 +366,82 @@ body {
     color: #e5e7eb;
 }
 
-.summary-item:last-child {
+.result-summary__item:last-child {
     border-bottom: none;
+}
+
+/* ============================= */
+/* 9. CAJA DE CONSEJO            */
+/* ============================= */
+
+.tip-box {
+    background: linear-gradient(135deg, rgba(222, 102, 17, 0.14), rgba(251, 191, 36, 0.12));
+    border: 1px solid rgba(251, 191, 36, 0.18);
+    border-radius: 16px;
+    padding: 16px;
+    color: #f8fafc;
+}
+
+.tip-box strong {
+    color: #fde68a;
+}
+
+.tip-box p {
+    color: #e5e7eb;
+    line-height: 1.5;
 }
 
 /* ============================= */
 /* 10. RESPONSIVE                */
 /* ============================= */
 
+@media (max-width: 1199.98px) {
+    .info-strip {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .info-strip__item--search {
+        grid-column: 1 / -1;
+    }
+}
+
 @media (max-width: 991.98px) {
-    .toolbar {
+    .top-banner__content {
         flex-direction: column;
-        align-items: stretch;
     }
 
-    .toolbar-right {
-        width: 100%;
-    }
-
-    .toolbar-right .btn {
-        flex: 1;
-        text-align: center;
+    .top-banner__right {
+        align-items: flex-start;
     }
 
     .result-card {
         position: static;
     }
+
+    .prediction-value {
+        font-size: 2.4rem;
+    }
 }
 
 @media (max-width: 767.98px) {
-    .page-title {
-        font-size: 1.8rem;
+    .top-banner {
+        padding: 24px 20px;
+    }
+
+    .top-banner__title {
+        font-size: 1.9rem;
     }
 
     .form-container {
         padding: 20px;
     }
 
-    .filters-bar {
-        padding: 14px;
+    .info-strip {
+        grid-template-columns: 1fr;
     }
 
-    .prediction-number {
-        font-size: 2.2rem;
+    .btn-action {
+        width: 100%;
     }
 }
 

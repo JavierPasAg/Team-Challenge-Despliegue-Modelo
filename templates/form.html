@@ -3,42 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Predictor Form</title>
+    <title>Estimador de Ingresos | Madrid Hosts</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="form-page">
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 px-lg-4">
     <!-- Banner superior -->
     <div class="top-banner mb-4">
         <div class="top-banner__content">
-            <div>
-                <p class="top-banner__eyebrow mb-2">Herramienta para arrendadores</p>
-                <h1 class="top-banner__title mb-2">Calcula el potencial anual de tu alojamiento</h1>
+            <div class="top-banner__left">
+                <div class="brand-badge mb-3">
+                    <i class="bi bi-house-heart-fill me-2"></i>
+                    Madrid Hosts Revenue Estimator
+                </div>
+
+                <h1 class="top-banner__title mb-2">
+                    Calcula el potencial de ingresos de tu alojamiento turístico
+                </h1>
+
                 <p class="top-banner__text mb-0">
-                    Ajusta las variables del inmueble, prueba escenarios distintos y obtén una estimación rápida
-                    del ingreso anual esperado.
+                    Ajusta las variables del inmueble, prueba escenarios distintos y obtén una
+                    estimación rápida del ingreso anual esperado para alquiler turístico en Madrid.
                 </p>
             </div>
 
-            <div class="top-banner__actions">
-                <a href="/" class="btn btn-light btn-home-banner">
-                    🏠 Home
+            <div class="top-banner__right">
+                <div class="top-banner__icon">
+                    <i class="bi bi-buildings-fill"></i>
+                </div>
+                <a href="/" class="btn btn-home-banner">
+                    <i class="bi bi-house-door-fill me-2"></i>Home
                 </a>
             </div>
         </div>
     </div>
 
     <div class="row g-4">
-        <!-- Zona izquierda -->
+        <!-- Columna principal -->
         <div class="col-xl-9 col-lg-8">
             <div class="form-container">
                 <div class="form-header-banner mb-4">
                     <div>
-                        <h2 class="mb-1">Configura la simulación</h2>
+                        <p class="mini-eyebrow mb-2">Simulación interactiva</p>
+                        <h2 class="mb-1">Configura tu predicción</h2>
                         <p class="mb-0">
-                            Introduce los datos del alojamiento, modifica valores y envía la predicción cuando quieras.
+                            Introduce datos reales o genera un ejemplo automático para explorar el comportamiento del modelo.
                         </p>
                     </div>
                 </div>
@@ -47,37 +60,41 @@
                     <div>
                         <h3 class="section-title mb-1">Variables del modelo</h3>
                         <p class="section-subtitle mb-0">
-                            Puedes escribir manualmente o usar valores de ejemplo para acelerar la prueba.
+                            Modifica valores y pulsa <strong>Enviar a Predicción</strong> para recalcular el resultado.
                         </p>
                     </div>
 
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="button" class="btn btn-custom btn-random" onclick="randomize()">
-                            🎲 Randomizar Todo
+                        <button type="button" class="btn btn-action btn-random" onclick="randomize()">
+                            <i class="bi bi-dice-5-fill me-2"></i>Randomizar Todo
                         </button>
 
-                        <button type="button" class="btn btn-custom btn-predict" onclick="sendPrediction()">
-                            🚀 Enviar a Predicción
+                        <button type="button" class="btn btn-action btn-predict" onclick="sendPrediction()">
+                            <i class="bi bi-rocket-takeoff-fill me-2"></i>Enviar a Predicción
                         </button>
 
-                        <a href="/" class="btn btn-custom btn-home">
-                            🏠 Inicio
+                        <a href="/" class="btn btn-action btn-home">
+                            <i class="bi bi-house-door-fill me-2"></i>Inicio
                         </a>
                     </div>
                 </div>
 
-                <!-- Mini banner informativo -->
+                <!-- Barra resumen/filtros -->
                 <div class="info-strip mb-4">
                     <div class="info-strip__item">
-                        <span class="info-strip__label">Modo</span>
+                        <span class="info-strip__label">Estado</span>
                         <strong id="summary-status">Esperando</strong>
                     </div>
+
                     <div class="info-strip__item">
-                        <span class="info-strip__label">Variables disponibles</span>
+                        <span class="info-strip__label">Variables</span>
                         <strong id="variables-count">0</strong>
                     </div>
+
                     <div class="info-strip__item info-strip__item--search">
-                        <label for="search-input" class="form-label small fw-bold mb-1">Buscar variable</label>
+                        <label for="search-input" class="form-label small fw-bold mb-1">
+                            <i class="bi bi-search me-1"></i>Buscar variable
+                        </label>
                         <input
                             type="text"
                             id="search-input"
@@ -91,23 +108,29 @@
             </div>
         </div>
 
-        <!-- Panel derecho -->
+        <!-- Panel lateral -->
         <div class="col-xl-3 col-lg-4">
             <div id="result-box" class="card result-card">
                 <div class="card-body">
                     <div class="result-card__banner mb-3">
-                        <p class="result-card__eyebrow mb-1">Estimación en tiempo real</p>
+                        <p class="result-card__eyebrow mb-1">
+                            <i class="bi bi-graph-up-arrow me-1"></i>Estimación en tiempo real
+                        </p>
                         <h5 class="card-title mb-0">Resultado de Predicción</h5>
                     </div>
 
                     <div class="result-card__value-wrap text-center">
-                        <h2 id="prediction-value" class="display-4 prediction-value">--</h2>
+                        <h2 id="prediction-value" class="prediction-value">--</h2>
                         <p class="prediction-currency mb-2">EUR / año estimado</p>
-                        <p id="prediction-note" class="small prediction-note"></p>
+                        <p id="prediction-note" class="small prediction-note mb-0">
+                            Introduce valores y lanza la simulación.
+                        </p>
                     </div>
 
                     <div class="result-summary mt-4">
-                        <h6 class="result-summary__title">Resumen rápido</h6>
+                        <h6 class="result-summary__title">
+                            <i class="bi bi-clipboard-data me-2"></i>Resumen rápido
+                        </h6>
 
                         <div class="result-summary__item">
                             <span>Capacidad</span>
@@ -126,10 +149,10 @@
                     </div>
 
                     <div class="tip-box mt-4">
-                        <strong>Consejo</strong>
-                        <p class="mb-0">
-                            Cambia unas pocas variables clave y vuelve a pulsar
-                            <em>Enviar a Predicción</em> para comparar escenarios.
+                        <strong><i class="bi bi-lightbulb-fill me-2"></i>Consejo</strong>
+                        <p class="mb-0 mt-2">
+                            Ajusta precio, disponibilidad y capacidad para comparar
+                            distintos escenarios de rentabilidad.
                         </p>
                     </div>
                 </div>
@@ -143,4 +166,168 @@
         'host_since', 'host_response_rate', 'host_acceptance_rate', 'host_is_superhost',
         'host_listings_count', 'host_total_listings_count', 'host_verifications',
         'host_has_profile_pic', 'host_identity_verified', 'latitude', 'longitude',
-       
+        'accommodates', 'bathrooms', 'bedrooms', 'beds', 'price', 'minimum_nights',
+        'maximum_nights', 'availability_365', 'number_of_reviews_ltm',
+        'estimated_occupancy_l365d', 'review_scores_rating', 'review_scores_accuracy',
+        'review_scores_cleanliness', 'review_scores_checkin', 'review_scores_communication',
+        'review_scores_location', 'review_scores_value', 'instant_bookable',
+        'reviews_per_month', 'host_response_time_ord', 'has_reviews',
+        'days_since_last_review', 'review_lifetime', 'host_response_time_num',
+        'has_host_responded', 'room_type_Hotel room', 'room_type_Private room',
+        'room_type_Shared room', 'bathrooms_num', 'is_bathroom_shared', 'ng_Barajas',
+        'ng_Carabanchel', 'ng_Centro', 'ng_Chamartín', 'ng_Chamberí', 'ng_Ciudad Lineal',
+        'ng_Fuencarral - El Pardo', 'ng_Hortaleza', 'ng_Latina', 'ng_Moncloa - Aravaca',
+        'ng_Moratalaz', 'ng_Puente de Vallecas', 'ng_Retiro', 'ng_Salamanca',
+        'ng_San Blas - Canillejas', 'ng_Tetuán', 'ng_Usera', 'ng_Vicálvaro',
+        'ng_Villa de Vallecas', 'ng_Villaverde', 'neighbourhood_revenue', 'pt_revenue'
+    ];
+
+    const form = document.getElementById('ml-form');
+    const searchInput = document.getElementById('search-input');
+    const variablesCount = document.getElementById('variables-count');
+    const summaryStatus = document.getElementById('summary-status');
+
+    const summaryAccommodates = document.getElementById('summary-accommodates');
+    const summaryAvailability = document.getElementById('summary-availability_365');
+    const summaryBathrooms = document.getElementById('summary-bathrooms');
+
+    const predictionValue = document.getElementById('prediction-value');
+    const predictionNote = document.getElementById('prediction-note');
+
+    function updateQuickSummary() {
+        const acc = document.getElementById('inp-accommodates');
+        const av = document.getElementById('inp-availability_365');
+        const bath = document.getElementById('inp-bathrooms');
+
+        summaryAccommodates.textContent = acc ? acc.value : '—';
+        summaryAvailability.textContent = av ? av.value : '—';
+        summaryBathrooms.textContent = bath ? bath.value : '—';
+    }
+
+    // Generar inputs automáticamente
+    columns.forEach(col => {
+        const div = document.createElement('div');
+        div.className = 'col-xxl-3 col-xl-4 col-lg-6 col-md-6 variable-item';
+        div.setAttribute('data-name', col.toLowerCase());
+
+        div.innerHTML = `
+            <div class="input-card">
+                <div class="input-card-top">
+                    <label class="form-label small fw-bold mb-1" for="inp-${col}">${col}</label>
+                    <span class="input-badge">feature</span>
+                </div>
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control form-control-sm"
+                    id="inp-${col}"
+                    value="0"
+                >
+            </div>
+        `;
+
+        form.appendChild(div);
+    });
+
+    variablesCount.innerText = columns.length;
+
+    // Escuchar cambios para actualizar resumen rápido
+    form.addEventListener('input', function () {
+        updateQuickSummary();
+    });
+
+    // Búsqueda
+    searchInput.addEventListener('input', function () {
+        const query = this.value.toLowerCase().trim();
+        const items = document.querySelectorAll('.variable-item');
+
+        items.forEach(item => {
+            const name = item.getAttribute('data-name');
+            item.style.display = name.includes(query) ? '' : 'none';
+        });
+    });
+
+    // Randomizar
+    function randomize() {
+        columns.forEach(col => {
+            const input = document.getElementById(`inp-${col}`);
+
+            if (!input) return;
+
+            if (col.startsWith('ng_') || col.startsWith('room_type_') || col.startsWith('is_')) {
+                input.value = Math.round(Math.random());
+            } else if (col === 'instant_bookable' || col === 'has_reviews' || col === 'has_host_responded' ||
+                       col === 'host_is_superhost' || col === 'host_has_profile_pic' || col === 'host_identity_verified') {
+                input.value = Math.round(Math.random());
+            } else if (col === 'latitude') {
+                input.value = (Math.random() * (40.50 - 40.30) + 40.30).toFixed(5);
+            } else if (col === 'longitude') {
+                input.value = (Math.random() * (-3.60 - -3.80) + -3.80).toFixed(5);
+            } else if (col.includes('review_scores')) {
+                input.value = (Math.random() * (5 - 3.5) + 3.5).toFixed(2);
+            } else if (col === 'bathrooms' || col === 'bathrooms_num') {
+                const bathroomOptions = [1, 1.5, 2, 2.5, 3];
+                input.value = bathroomOptions[Math.floor(Math.random() * bathroomOptions.length)];
+            } else if (col === 'price') {
+                input.value = Math.floor(Math.random() * 180) + 50;
+            } else if (col === 'availability_365') {
+                input.value = Math.floor(Math.random() * 365);
+            } else if (col === 'accommodates') {
+                input.value = Math.floor(Math.random() * 7) + 1;
+            } else {
+                input.value = Math.floor(Math.random() * 50);
+            }
+        });
+
+        updateQuickSummary();
+        summaryStatus.innerText = "Randomizado";
+        predictionNote.innerText = "Se han generado valores de ejemplo. Pulsa “Enviar a Predicción”.";
+    }
+
+    // Enviar predicción
+    async function sendPrediction() {
+        const data = {};
+
+        columns.forEach(col => {
+            const el = document.getElementById(`inp-${col}`);
+            data[col] = el ? (parseFloat(el.value) || 0) : 0;
+        });
+
+        predictionValue.innerText = "⏳";
+        predictionNote.innerText = "Calculando predicción...";
+        summaryStatus.innerText = "Calculando";
+
+        try {
+            const response = await fetch('/api/v1/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.prediction !== undefined) {
+                predictionValue.innerText = Number(result.prediction).toLocaleString("es-ES", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                predictionNote.innerText = result.note || "Predicción realizada correctamente.";
+                summaryStatus.innerText = "Completado";
+            } else {
+                predictionValue.innerText = "Error";
+                predictionNote.innerText = result.error || "Se produjo un error en la predicción.";
+                summaryStatus.innerText = "Error";
+            }
+        } catch (error) {
+            console.error(error);
+            predictionValue.innerText = "Error";
+            predictionNote.innerText = "No se pudo conectar con el endpoint /api/v1/predict";
+            summaryStatus.innerText = "Sin conexión";
+        }
+    }
+
+    updateQuickSummary();
+</script>
+
+</body>
+</html>
