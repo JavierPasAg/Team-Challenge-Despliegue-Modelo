@@ -7,61 +7,83 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="form-page">
 
 <div class="container-fluid py-4">
-    <div class="page-header mb-4">
-        <div>
-            <p class="page-eyebrow mb-2">Predicción interactiva</p>
-            <h1 class="page-title mb-2">Configuración de Variables del Modelo</h1>
-            <p class="page-subtitle mb-0">
-                Ajusta las variables manualmente o utiliza valores aleatorios para lanzar una predicción rápida.
-            </p>
+    <!-- Banner superior -->
+    <div class="top-banner mb-4">
+        <div class="top-banner__content">
+            <div>
+                <p class="top-banner__eyebrow mb-2">Herramienta para arrendadores</p>
+                <h1 class="top-banner__title mb-2">Calcula el potencial anual de tu alojamiento</h1>
+                <p class="top-banner__text mb-0">
+                    Ajusta las variables del inmueble, prueba escenarios distintos y obtén una estimación rápida
+                    del ingreso anual esperado.
+                </p>
+            </div>
+
+            <div class="top-banner__actions">
+                <a href="/" class="btn btn-light btn-home-banner">
+                    🏠 Home
+                </a>
+            </div>
         </div>
     </div>
 
     <div class="row g-4">
+        <!-- Zona izquierda -->
         <div class="col-xl-9 col-lg-8">
             <div class="form-container">
-                <div class="toolbar mb-4">
-                    <div class="toolbar-left">
-                        <h2 class="section-title mb-1">Variables de entrada</h2>
+                <div class="form-header-banner mb-4">
+                    <div>
+                        <h2 class="mb-1">Configura la simulación</h2>
+                        <p class="mb-0">
+                            Introduce los datos del alojamiento, modifica valores y envía la predicción cuando quieras.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                    <div>
+                        <h3 class="section-title mb-1">Variables del modelo</h3>
                         <p class="section-subtitle mb-0">
-                            Introduce los valores que quieres enviar al modelo.
+                            Puedes escribir manualmente o usar valores de ejemplo para acelerar la prueba.
                         </p>
                     </div>
 
-                    <div class="toolbar-right">
-                        <button type="button" class="btn btn-custom" onclick="randomize()">
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="btn btn-custom btn-random" onclick="randomize()">
                             🎲 Randomizar Todo
                         </button>
 
-                        <button type="button" class="btn btn-custom btn-custom-solid" onclick="sendPrediction()">
+                        <button type="button" class="btn btn-custom btn-predict" onclick="sendPrediction()">
                             🚀 Enviar a Predicción
                         </button>
 
-                        <a href="/" class="btn btn-custom">
+                        <a href="/" class="btn btn-custom btn-home">
                             🏠 Inicio
                         </a>
                     </div>
                 </div>
 
-                <div class="filters-bar mb-4">
-                    <div class="search-box">
-                        <label for="search-input" class="form-label small fw-bold mb-2">Buscar variable</label>
+                <!-- Mini banner informativo -->
+                <div class="info-strip mb-4">
+                    <div class="info-strip__item">
+                        <span class="info-strip__label">Modo</span>
+                        <strong id="summary-status">Esperando</strong>
+                    </div>
+                    <div class="info-strip__item">
+                        <span class="info-strip__label">Variables disponibles</span>
+                        <strong id="variables-count">0</strong>
+                    </div>
+                    <div class="info-strip__item info-strip__item--search">
+                        <label for="search-input" class="form-label small fw-bold mb-1">Buscar variable</label>
                         <input
                             type="text"
                             id="search-input"
                             class="form-control"
-                            placeholder="Ej. bathrooms, latitude, ng_Centro..."
+                            placeholder="Ej. bathrooms, price, latitude..."
                         >
-                    </div>
-
-                    <div class="stats-box">
-                        <div class="stats-pill">
-                            <span>Total de variables</span>
-                            <strong id="variables-count">0</strong>
-                        </div>
                     </div>
                 </div>
 
@@ -69,35 +91,46 @@
             </div>
         </div>
 
+        <!-- Panel derecho -->
         <div class="col-xl-3 col-lg-4">
-            <div id="result-box" class="result-card card">
+            <div id="result-box" class="card result-card">
                 <div class="card-body">
-                    <div class="result-header text-center">
-                        <p class="result-eyebrow mb-2">Modelo de predicción</p>
-                        <h5 class="card-title mb-2">Resultado</h5>
-                        <p class="result-helper mb-0">
-                            El valor estimado aparecerá aquí.
-                        </p>
+                    <div class="result-card__banner mb-3">
+                        <p class="result-card__eyebrow mb-1">Estimación en tiempo real</p>
+                        <h5 class="card-title mb-0">Resultado de Predicción</h5>
                     </div>
 
-                    <hr>
-
-                    <div class="text-center">
-                        <h2 id="prediction-value" class="prediction-number">--</h2>
+                    <div class="result-card__value-wrap text-center">
+                        <h2 id="prediction-value" class="display-4 prediction-value">--</h2>
                         <p class="prediction-currency mb-2">EUR / año estimado</p>
-                        <p id="prediction-note" class="prediction-note mb-0"></p>
+                        <p id="prediction-note" class="small prediction-note"></p>
                     </div>
 
-                    <div class="summary-panel mt-4">
-                        <h6 class="summary-title">Resumen rápido</h6>
-                        <div class="summary-item">
-                            <span>Variables cargadas</span>
-                            <strong id="summary-total">0</strong>
+                    <div class="result-summary mt-4">
+                        <h6 class="result-summary__title">Resumen rápido</h6>
+
+                        <div class="result-summary__item">
+                            <span>Capacidad</span>
+                            <strong id="summary-accommodates">—</strong>
                         </div>
-                        <div class="summary-item">
-                            <span>Modo</span>
-                            <strong id="summary-status">Esperando</strong>
+
+                        <div class="result-summary__item">
+                            <span>Disponibilidad</span>
+                            <strong id="summary-availability_365">—</strong>
                         </div>
+
+                        <div class="result-summary__item">
+                            <span>Baños</span>
+                            <strong id="summary-bathrooms">—</strong>
+                        </div>
+                    </div>
+
+                    <div class="tip-box mt-4">
+                        <strong>Consejo</strong>
+                        <p class="mb-0">
+                            Cambia unas pocas variables clave y vuelve a pulsar
+                            <em>Enviar a Predicción</em> para comparar escenarios.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -106,129 +139,8 @@
 </div>
 
 <script>
-    // Tu lista de columnas exacta
     const columns = [
-        'host_since', 'host_response_rate', 'host_acceptance_rate', 'host_is_superhost', 
-        'host_listings_count', 'host_total_listings_count', 'host_verifications', 
-        'host_has_profile_pic', 'host_identity_verified', 'latitude', 'longitude', 
-        'accommodates', 'bathrooms', 'bedrooms', 'beds', 'price', 'minimum_nights', 
-        'maximum_nights', 'availability_365', 'number_of_reviews_ltm', 
-        'estimated_occupancy_l365d', 'review_scores_rating', 'review_scores_accuracy', 
-        'review_scores_cleanliness', 'review_scores_checkin', 'review_scores_communication', 
-        'review_scores_location', 'review_scores_value', 'instant_bookable', 
-        'reviews_per_month', 'host_response_time_ord', 'has_reviews', 
-        'days_since_last_review', 'review_lifetime', 'host_response_time_num', 
-        'has_host_responded', 'room_type_Hotel room', 'room_type_Private room', 
-        'room_type_Shared room', 'bathrooms_num', 'is_bathroom_shared', 'ng_Barajas', 
-        'ng_Carabanchel', 'ng_Centro', 'ng_Chamartín', 'ng_Chamberí', 'ng_Ciudad Lineal', 
-        'ng_Fuencarral - El Pardo', 'ng_Hortaleza', 'ng_Latina', 'ng_Moncloa - Aravaca', 
-        'ng_Moratalaz', 'ng_Puente de Vallecas', 'ng_Retiro', 'ng_Salamanca', 
-        'ng_San Blas - Canillejas', 'ng_Tetuán', 'ng_Usera', 'ng_Vicálvaro', 
-        'ng_Villa de Vallecas', 'ng_Villaverde', 'neighbourhood_revenue', 'pt_revenue'
-    ];
-
-    const form = document.getElementById('ml-form');
-    const searchInput = document.getElementById('search-input');
-    const variablesCount = document.getElementById('variables-count');
-    const summaryTotal = document.getElementById('summary-total');
-    const summaryStatus = document.getElementById('summary-status');
-
-    // 1. Generar Inputs Automáticamente
-    columns.forEach(col => {
-        const div = document.createElement('div');
-        div.className = 'col-xxl-3 col-xl-4 col-lg-6 col-md-6 variable-item';
-        div.setAttribute('data-name', col.toLowerCase());
-
-        div.innerHTML = `
-            <div class="input-card">
-                <div class="input-card-top">
-                    <label class="form-label small fw-bold mb-1">${col}</label>
-                    <span class="input-badge">feature</span>
-                </div>
-                <input type="number" step="any" class="form-control form-control-sm" id="inp-${col}" value="0">
-            </div>
-        `;
-        form.appendChild(div);
-    });
-
-    variablesCount.innerText = columns.length;
-    summaryTotal.innerText = columns.length;
-
-    // 2. Búsqueda de variables
-    searchInput.addEventListener('input', function () {
-        const query = this.value.toLowerCase().trim();
-        const items = document.querySelectorAll('.variable-item');
-
-        items.forEach(item => {
-            const name = item.getAttribute('data-name');
-            item.style.display = name.includes(query) ? '' : 'none';
-        });
-    });
-
-    // 3. Función Randomizar
-    function randomize() {
-        columns.forEach(col => {
-            const input = document.getElementById(`inp-${col}`);
-            if (col.startsWith('ng_') || col.startsWith('room_type_') || col.startsWith('is_')) {
-                input.value = Math.round(Math.random());
-            } else if (col === 'latitude') {
-                input.value = (Math.random() * (40.5 - 40.3) + 40.3).toFixed(5);
-            } else if (col === 'longitude') {
-                input.value = (Math.random() * (-3.6 - -3.8) + -3.8).toFixed(5);
-            } else {
-                input.value = Math.floor(Math.random() * 50);
-            }
-        });
-
-        summaryStatus.innerText = "Randomizado";
-        document.getElementById('prediction-note').innerText = "Se han cargado valores aleatorios.";
-    }
-
-    // 4. Función Enviar Predicción
-    async function sendPrediction() {
-        const data = {};
-        columns.forEach(col => {
-            data[col] = parseFloat(document.getElementById(`inp-${col}`).value) || 0;
-        });
-
-        const resultBox = document.getElementById('result-box');
-        const predText = document.getElementById('prediction-value');
-        const noteText = document.getElementById('prediction-note');
-
-        resultBox.style.display = 'block';
-        resultBox.classList.add('result-card--active');
-        predText.innerText = "⏳";
-        noteText.innerText = "Calculando predicción...";
-        summaryStatus.innerText = "Calculando";
-
-        try {
-            const response = await fetch('/api/v1/predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            if (result.prediction !== undefined) {
-                predText.innerText = result.prediction.toFixed(2);
-                noteText.innerText = result.note || "Predicción realizada correctamente.";
-                summaryStatus.innerText = "Completado";
-            } else {
-                predText.innerText = "Error";
-                noteText.innerText = "Se produjo un error en la predicción.";
-                summaryStatus.innerText = "Error";
-                alert("Error en el servidor: " + result.error);
-            }
-        } catch (error) {
-            console.error(error);
-            predText.innerText = "Error";
-            noteText.innerText = "No se pudo conectar con el endpoint.";
-            summaryStatus.innerText = "Sin conexión";
-            alert("No se pudo conectar con el endpoint /api/v1/predict");
-        }
-    }
-</script>
-
-</body>
-</html>
+        'host_since', 'host_response_rate', 'host_acceptance_rate', 'host_is_superhost',
+        'host_listings_count', 'host_total_listings_count', 'host_verifications',
+        'host_has_profile_pic', 'host_identity_verified', 'latitude', 'longitude',
+       
