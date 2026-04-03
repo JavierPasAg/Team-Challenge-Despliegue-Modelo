@@ -1,140 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Predictor Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de predicción</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="form-container">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Configuración de Variables</h2>
-                    <div class="d-flex align-items-center">
-                        <button type="button" class="btn btn-custom" onclick="randomize()">
-                             🎲 Randomizar Todo
-                        </button>
-        
-                        <button type="button" class="btn btn-custom" onclick="sendPrediction()">
-                            🚀 Enviar a Predicción
-                        </button>
-        
-                        <a href="/" class="btn btn-custom">
-                            🏠 Inicio
-                        </a>
-                    </div>
-                </div>
-                <form id="ml-form" class="row g-3">
-                    </form>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div id="result-box" class="card text-white bg-dark">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Resultado de Predicción</h5>
-                    <hr>
-                    <h2 id="prediction-value" class="display-4 text-warning">--</h2>
-                    <p id="prediction-note" class="small text-secondary"></p>
-                </div>
-            </div>
-        </div>
+  <main class="container">
+    <div class="top-bar">
+      <div>
+        <p class="eyebrow">Predicción interactiva</p>
+        <h1 class="page-title">Estimar ingreso anual</h1>
+      </div>
+      <a href="{{ url_for('hello') }}" class="btn btn-secondary">Volver</a>
     </div>
-</div>
 
-<script>
-    // Tu lista de columnas exacta
-    const columns = [
-        'host_since', 'host_response_rate', 'host_acceptance_rate', 'host_is_superhost', 
-        'host_listings_count', 'host_total_listings_count', 'host_verifications', 
-        'host_has_profile_pic', 'host_identity_verified', 'latitude', 'longitude', 
-        'accommodates', 'bathrooms', 'bedrooms', 'beds', 'price', 'minimum_nights', 
-        'maximum_nights', 'availability_365', 'number_of_reviews_ltm', 
-        'estimated_occupancy_l365d', 'review_scores_rating', 'review_scores_accuracy', 
-        'review_scores_cleanliness', 'review_scores_checkin', 'review_scores_communication', 
-        'review_scores_location', 'review_scores_value', 'instant_bookable', 
-        'reviews_per_month', 'host_response_time_ord', 'has_reviews', 
-        'days_since_last_review', 'review_lifetime', 'host_response_time_num', 
-        'has_host_responded', 'room_type_Hotel room', 'room_type_Private room', 
-        'room_type_Shared room', 'bathrooms_num', 'is_bathroom_shared', 'ng_Barajas', 
-        'ng_Carabanchel', 'ng_Centro', 'ng_Chamartín', 'ng_Chamberí', 'ng_Ciudad Lineal', 
-        'ng_Fuencarral - El Pardo', 'ng_Hortaleza', 'ng_Latina', 'ng_Moncloa - Aravaca', 
-        'ng_Moratalaz', 'ng_Puente de Vallecas', 'ng_Retiro', 'ng_Salamanca', 
-        'ng_San Blas - Canillejas', 'ng_Tetuán', 'ng_Usera', 'ng_Vicálvaro', 
-        'ng_Villa de Vallecas', 'ng_Villaverde', 'neighbourhood_revenue', 'pt_revenue'
-    ];
+    <div class="layout">
+      <section class="main-card">
+        <h2>Datos del alojamiento</h2>
 
-    const form = document.getElementById('ml-form');
+        <form id="prediction-form" class="form-grid">
+          <div class="form-group">
+            <label for="accommodates">Capacidad</label>
+            <input type="number" id="accommodates" name="accommodates" step="1" placeholder="Ej. 4">
+          </div>
 
-    // 1. Generar Inputs Automáticamente
-    columns.forEach(col => {
-        const div = document.createElement('div');
-        div.className = 'col-xl-3 col-lg-4 col-md-6';
-        div.innerHTML = `
-            <div class="input-card">
-                <label class="form-label small fw-bold mb-1">${col}</label>
-                <input type="number" step="any" class="form-control form-control-sm" id="inp-${col}" value="0">
-            </div>
-        `;
-        form.appendChild(div);
+          <div class="form-group">
+            <label for="availability_365">Disponibilidad anual</label>
+            <input type="number" id="availability_365" name="availability_365" step="1" placeholder="Ej. 220">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="bathrooms">Baños</label>
+            <input type="number" id="bathrooms" name="bathrooms" step="0.5" placeholder="Ej. 1">
+          </div>
+
+          <div class="full-width">
+            <button type="submit" class="btn btn-primary">Calcular predicción</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="side-card">
+        <h2>Resumen</h2>
+
+        <div class="summary-item">
+          <span>Capacidad</span>
+          <strong id="summary-accommodates">—</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Disponibilidad anual</span>
+          <strong id="summary-availability_365">—</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Baños</span>
+          <strong id="summary-bathrooms">—</strong>
+        </div>
+
+        <hr>
+
+        <h2>Resultado</h2>
+        <div id="result" class="result-box">
+          Aquí aparecerá la predicción.
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById("prediction-form");
+    const resultBox = document.getElementById("result");
+
+    const fields = {
+      accommodates: document.getElementById("accommodates"),
+      availability_365: document.getElementById("availability_365"),
+      bathrooms: document.getElementById("bathrooms")
+    };
+
+    const summary = {
+      accommodates: document.getElementById("summary-accommodates"),
+      availability_365: document.getElementById("summary-availability_365"),
+      bathrooms: document.getElementById("summary-bathrooms")
+    };
+
+    function refreshSummary() {
+      summary.accommodates.textContent = fields.accommodates.value || "—";
+      summary.availability_365.textContent = fields.availability_365.value || "—";
+      summary.bathrooms.textContent = fields.bathrooms.value || "—";
+    }
+
+    Object.values(fields).forEach(input => {
+      input.addEventListener("input", refreshSummary);
     });
 
-    // 2. Función Randomizar
-    function randomize() {
-        columns.forEach(col => {
-            const input = document.getElementById(`inp-${col}`);
-            // Lógica simple de random: 0-1 para binarias, 0-100 para el resto
-            if (col.startsWith('ng_') || col.startsWith('room_type_') || col.startsWith('is_')) {
-                input.value = Math.round(Math.random());
-            } else if (col === 'latitude') {
-                input.value = (Math.random() * (40.5 - 40.3) + 40.3).toFixed(5);
-            } else if (col === 'longitude') {
-                input.value = (Math.random() * (-3.6 - -3.8) + -3.8).toFixed(5);
-            } else {
-                input.value = Math.floor(Math.random() * 50);
-            }
-        });
-    }
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    // 3. Función Enviar Predicción
-    async function sendPrediction() {
-        const data = {};
-        columns.forEach(col => {
-            data[col] = parseFloat(document.getElementById(`inp-${col}`).value) || 0;
+      const payload = {
+        accommodates: parseFloat(fields.accommodates.value),
+        availability_365: parseFloat(fields.availability_365.value),
+        bathrooms: parseFloat(fields.bathrooms.value)
+      };
+
+      resultBox.textContent = "Calculando...";
+
+      try {
+        const response = await fetch("/api/v1/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
 
-        const resultBox = document.getElementById('result-box');
-        const predText = document.getElementById('prediction-value');
-        
-        resultBox.style.display = 'block';
-        predText.innerText = "⏳...";
+        const data = await response.json();
 
-        try {
-            const response = await fetch('/api/v1/predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            const result = await response.json();
-            
-            if(result.prediction !== undefined) {
-                predText.innerText = result.prediction.toFixed(2);
-                document.getElementById('prediction-note').innerText = result.note || "Predicción realizada";
-            } else {
-                predText.innerText = "Error";
-                alert("Error en el servidor: " + result.error);
-            }
-        } catch (error) {
-            console.error(error);
-            alert("No se pudo conectar con el endpoint /api/v1/predict");
+        if (!response.ok || data.error) {
+          resultBox.textContent = data.error || "No se pudo obtener la predicción.";
+          return;
         }
-    }
-</script>
 
+        const formatted = Number(data.prediction).toLocaleString("es-ES", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+
+        resultBox.innerHTML = `
+          <div class="prediction-value">${formatted} €</div>
+          <div class="prediction-status">Estado: ${data.status || "success"}</div>
+          ${data.note ? `<div class="prediction-note">${data.note}</div>` : ""}
+        `;
+      } catch (error) {
+        resultBox.textContent = "Error de conexión con la API.";
+      }
+    });
+
+    refreshSummary();
+  </script>
 </body>
 </html>

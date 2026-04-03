@@ -1,37 +1,219 @@
-body { 
-    background-color: #f8f9fa; 
+/* 1. ESTILOS BODY */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #1f2937;
 }
 
-/*Encabezado */
-.hero { 
-    background: linear-gradient(to bottom,
-                                rgb(222, 102, 17) 0%, 
-                                rgb(189, 184, 193) 100%); 
-    color: white; 
-    padding: 60px 0; 
+/* 2. CONTENEDOR GENERAL DE LA PÁGINA    */
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px;
 }
 
-/* Estilo botón */
-.btn-custom {
-    color: rgb(222, 102, 17);
-    border: 2px solid rgb(222, 102, 17);
-    background-color: transparent;
-    transition: all 0.3s ease;
+/* 3. TARJETAS PRINCIPALES DEL DISEÑO    */
+
+.hero-card,
+.main-card,
+.side-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Efecto hover del botón*/
-.btn-custom:hover {
-    background-color: rgb(222, 102, 17);
-    color: white;
+/* 4. TARJETA HERO DE LA LANDING         */
+
+.hero-card {
+  max-width: 760px;
+  margin: 60px auto;
+  text-align: center;
 }
 
-/* Estilo etiqueta tipo card */
-.card { 
-    border: none; 
-    border-radius: 15px; 
-    box-shadow: 0 4px 15px rgba(222, 102, 17, 0.678); 
+/* 5. TEXTO PEQUEÑO SUPERIOR   */
+
+.eyebrow {
+  color: #2563eb;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
-.form-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.input-group-text { font-size: 0.8rem; background-color: #e9ecef; }
-.input-card { height: 100%; border: 1px solid #dee2e6; padding: 10px; border-radius: 8px; }
-#result-box { display: none; position: sticky; top: 20px; }
+
+/* 6. TÍTULOS PRINCIPALES                */
+
+.hero-card h1,
+.page-title {
+  margin: 0 0 12px;
+  font-size: 2.2rem;
+}
+
+/* 7. TEXTO DESCRIPTIVO DE LA LANDING    */
+
+.hero-text {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* 8. ZONA DE ACCIONES DE LA HERO        */
+
+.hero-actions {
+  margin-top: 20px;
+}
+
+/* 9. BARRA SUPERIOR DEL FORMULARIO      */
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+/* 10. LAYOUT DE DOS COLUMNAS            */
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* 11. PANEL LATERAL FIJO                */
+
+.side-card {
+  position: sticky;
+  top: 24px;
+}
+
+/* 12. GRID INTERNO DEL FORMULARIO       */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* 13. GRUPOS DE FORMULARIO              */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 14. ELEMENTOS A ANCHO COMPLETO        */
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* 15. LABELS DEL FORMULARIO             */
+
+label {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+/* 16. INPUTS DEL FORMULARIO             */
+
+input {
+  padding: 12px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* 17. ESTADO FOCUS DE LOS INPUTS        */
+
+input:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* 18. BOTONES GENERALES                 */
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 19. BOTÓN PRINCIPAL                   */
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* 20. BOTÓN SECUNDARIO                  */
+
+.btn-secondary {
+  background: white;
+  color: #1f2937;
+  border: 1px solid #dbe2ea;
+}
+
+/* 21. FILAS DEL RESUMEN LATERAL         */
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eef2f7;
+}
+
+/* 22. CAJA DEL RESULTADO                */
+
+.result-box {
+  margin-top: 12px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+  min-height: 120px;
+}
+
+/* 23. VALOR GRANDE DE LA PREDICCIÓN     */
+
+.prediction-value {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+
+/* 24. TEXTO AUXILIAR           */
+
+.prediction-status {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+/* 25. NOTA ADICIONAL DEL MODELO         */
+
+.prediction-note {
+  margin-top: 10px;
+  color: #0f766e;
+  font-size: 0.95rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 20px 0;
+}
+
+
