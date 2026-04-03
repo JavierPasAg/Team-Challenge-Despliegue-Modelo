@@ -3,42 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advertising ML API</title>
+    <title>Madrid Hosts | Estimador de ingresos</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-    <header class="hero text-center">
-        <div class="container">
-            <h1 class="display-4 fw-bold"> ML Revenue Predictor</h1>
-            <p class="lead">Bienvenido a la interfaz de control de tu modelo predictivo.</p>
-            <p class="lead">Podemos poner más texto por aqui</p>
+<div class="container py-5">
 
-        </div>
-    </header>
+    <!-- HERO PRINCIPAL -->
+    <div class="home-hero mb-5">
+        <div class="home-hero__content">
+            <div class="home-hero__left">
+                <div class="brand-badge mb-3">
+                    <i class="bi bi-house-heart-fill me-2"></i>
+                    Madrid Hosts
+                </div>
 
-    <main class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
-                <div class="card p-5">
-                    <h3>Estado del Servicio: <span class="badge bg-success">Online</span></h3>
-                    <p class="text-muted mt-3">
-                        Esta API está lista para recibir peticiones POST en el endpoint <code>/api/v1/predict</code>.
-                    </p>
-                    <hr>
-                    <div class="d-grid gap-2 d-md-block">
-                        <a href="/api/v1/predict-form" class="btn btn-custom">Configura las variables para obtener la predicción</a>
-                        <button class="btn btn-custom" onclick="alert('¡Aquí podrías poner un formulario!')">Documentación</button>
-                    </div>
+                <h1 class="home-title mb-3">
+                    Descubre cuánto puedes ganar con tu vivienda turística
+                </h1>
+
+                <p class="home-subtitle mb-4">
+                    Utiliza nuestro modelo de Machine Learning para estimar el ingreso anual
+                    potencial de tu alojamiento en Madrid. Ajusta variables y simula escenarios
+                    reales en segundos.
+                </p>
+
+                <div class="home-actions">
+                    <a href="/api/v1/predict-form" class="btn btn-main">
+                        <i class="bi bi-rocket-takeoff-fill me-2"></i>
+                        Empezar simulación
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-hero__right">
+                <div class="hero-icon-box">
+                    <i class="bi bi-graph-up-arrow"></i>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer class="text-center py-4">
-        <small class="text-muted">Modelo predictivo elaborado por Román, Sara, Nazareth y Javier</small>
-    </footer>
+    <!-- BLOQUES DE VALOR -->
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+            <div class="feature-card">
+                <i class="bi bi-calculator-fill feature-icon"></i>
+                <h5>Estimación realista</h5>
+                <p>
+                    Basado en datos reales de mercado, el modelo predice ingresos anuales
+                    ajustados a características del alojamiento.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature-card">
+                <i class="bi bi-sliders feature-icon"></i>
+                <h5>Simulación flexible</h5>
+                <p>
+                    Cambia variables como precio, ocupación o disponibilidad y analiza
+                    distintos escenarios en tiempo real.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature-card">
+                <i class="bi bi-lightning-fill feature-icon"></i>
+                <h5>Resultados instantáneos</h5>
+                <p>
+                    Obtén la predicción en segundos y toma decisiones más informadas
+                    sobre tu estrategia de alquiler.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CTA FINAL -->
+    <div class="cta-box text-center">
+        <h2 class="mb-3">Empieza ahora a estimar tus ingresos</h2>
+        <p class="mb-4">
+            Introduce los datos de tu vivienda y descubre su potencial de rentabilidad.
+        </p>
+
+        <a href="/api/v1/predict-form" class="btn btn-main btn-lg">
+            <i class="bi bi-play-circle-fill me-2"></i>
+            Ir al simulador
+        </a>
+    </div>
+
+</div>
 
 </body>
 </html>

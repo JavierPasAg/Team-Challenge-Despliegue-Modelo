@@ -444,5 +444,98 @@ body.form-page {
         width: 100%;
     }
 }
+/* ============================= */
+/* HERO LANDING                  */
+/* ============================= */
+
+.home-hero {
+    background: linear-gradient(135deg, #de6611 0%, #f59e0b 40%, #1f2937 100%);
+    border-radius: 28px;
+    padding: 40px;
+    color: white;
+    box-shadow: 0 20px 40px rgba(222, 102, 17, 0.25);
+}
+
+.home-hero__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.home-hero__left {
+    max-width: 640px;
+}
+
+.home-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.home-subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.hero-icon-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+/* ============================= */
+/* BOTÓN PRINCIPAL LANDING       */
+/* ============================= */
+
+.btn-main {
+    background: linear-gradient(135deg, #de6611 0%, #ea580c 100%);
+    color: white;
+    border-radius: 14px;
+    font-weight: 700;
+    padding: 14px 22px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(222, 102, 17, 0.3);
+}
+
+.btn-main:hover {
+    background: #c2410c;
+    color: white;
+}
+
+/* ============================= */
+/* TARJETAS DE FEATURES          */
+/* ============================= */
+
+.feature-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    text-align: center;
+    height: 100%;
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: #de6611;
+    margin-bottom: 12px;
+}
+
+/* ============================= */
+/* CTA FINAL                     */
+/* ============================= */
+
+.cta-box {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border-radius: 24px;
+    padding: 40px;
+}
 
 
