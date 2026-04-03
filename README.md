@@ -79,7 +79,7 @@ data = {
     "reviews_per_month": 2.5
 }
 
-response = requests.post("https://<tu-url-render>/api/v1/predict", json=data)
+response = requests.post("https://team-challenge-despliegue-modelo.onrender.com/api/v1/predict", json=data)
 print(response.json())
 ```
 
@@ -104,8 +104,15 @@ python model.py
 
 Esto ejecuta el pipeline completo de preprocesado, optimización de hiperparámetros y guardado del modelo en `models/modelo_optimizado.pkl`.
 
-## Instalación y ejecución local
+## Despliegue
 
+La API está desplegada en Render y accesible públicamente:
+
+**https://team-challenge-despliegue-modelo.onrender.com/**
+
+### Ejecución local
+
+Si quieres ejecutarla en local:
 ```bash
 pip install -r requirements.txt
 python app_model.py
