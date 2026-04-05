@@ -125,6 +125,9 @@
                         <p id="prediction-note" class="small prediction-note mb-0">
                             Introduce valores y lanza la simulación.
                         </p>
+                        <button type="button" id="btn-download-csv" class="btn btn-sm btn-outline-secondary mt-3 d-none" onclick="downloadPredictionCsv()">
+                            <i class="bi bi-download me-1"></i>Descargar predicción en CSV
+                        </button>
                     </div>
 
                     <div class="result-summary mt-4">
@@ -193,6 +196,22 @@
 
     const predictionValue = document.getElementById('prediction-value');
     const predictionNote = document.getElementById('prediction-note');
+    const btnDownloadCsv = document.getElementById('btn-download-csv');
+    let lastPredictionExport = null;
+
+    function downloadPredictionCsv() {
+        if (!lastPredictionExport) return;
+        const { data, prediction } = lastPredictionExport;
+        const header = [...columns, 'prediction_eur'].join(',');
+        const row = columns.map(c => data[c]).join(',') + ',' + prediction;
+        const blob = new Blob([header + '\n' + row], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'prediccion_revenue_madrid.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 
     function updateQuickSummary() {
         const acc = document.getElementById('inp-accommodates');
@@ -296,6 +315,8 @@
         predictionValue.innerText = "⏳";
         predictionNote.innerText = "Calculando predicción...";
         summaryStatus.innerText = "Calculando";
+        lastPredictionExport = null;
+        btnDownloadCsv.classList.add("d-none");
 
         try {
             const response = await fetch('/api/v1/predict', {
@@ -313,6 +334,8 @@
                 });
                 predictionNote.innerText = result.note || "Predicción realizada correctamente.";
                 summaryStatus.innerText = "Completado";
+                lastPredictionExport = { data: { ...data }, prediction: result.prediction };
+                btnDownloadCsv.classList.remove("d-none");
             } else {
                 predictionValue.innerText = "Error";
                 predictionNote.innerText = result.error || "Se produjo un error en la predicción.";
