@@ -108,7 +108,7 @@ Esto ejecuta el pipeline completo de preprocesado, optimización de hiperparáme
 
 La API está desplegada en Render y accesible públicamente:
 
-**https://team-challenge-despliegue-modelo.onrender.com/**
+**https://estimatupiso.onrender.com/**
 
 ### Ejecución local
 
